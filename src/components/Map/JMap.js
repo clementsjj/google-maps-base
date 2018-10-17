@@ -1,57 +1,30 @@
-import React, { Component } from 'react';
-import { Map } from '../views';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
 
-class JMap extends Component {
-  constructor() {
-    super();
-    this.state = {
-      map: null,
-      currentUserLocation: null,
-      zoom: 14
-    };
+export default class JMap extends Component {
+  state = {
+    zoom: 14,
+    lat: 40.7308,
+    lng: -73.9973
+  };
+
+  componentDidMount() {
+    // const map = new window.google.maps.Map(document.getElementById("map"), {
+    //   center: { lat: this.state.lat, lng: this.state.lng },
+    //   zoom: this.state.zoom
+    // });
+
+    this.map = new window.google.maps.Map(this.refs.map, {
+      center: { lat: this.state.lat, lng: this.state.lng },
+      zoom: this.state.zoom
+    });
   }
 
   render() {
-    const lngCurrentLocation = this.props.map.currentLocation.lng;
-    const latCurrentLocation = this.props.map.currentLocation.lat;
-    console.log(this.props.map.allLocations);
-    return (
-      <div>
-        <div className="sidebar-wrapper">
-          <Map
-            // 	markers={[
-            // 			{
-            // 				position: {
-            // 					lat: latCurrentLocation, lng: lngCurrentLocation
-            // 			}
-            // 			},
-            // 			{
-            // 				position: {
-            // 					lat: 40.7224017, lng: -73.9896719
-            // 				}
-            // 			}
-            // ]}
-            markers={this.props.map.allLocations}
-            zoom={this.state.zoom}
-            center={{ lat: latCurrentLocation, lng: lngCurrentLocation }}
-            //center={this.props.map.currentLocation}
-            containerElement={<div style={{ height: 100 + '%' }} />}
-            mapElement={<div style={{ height: 100 + 'vh' }} />}
-          />
-        </div>
-      </div>
-    );
+    const mapStyle = {
+      width: "100vw",
+      height: "90vh",
+      border: "1px solid black"
+    };
+    return <div style={mapStyle} ref="map" />;
   }
 }
-
-const stateToProps = state => {
-  return {
-    map: state.map
-  };
-};
-
-export default connect(
-  stateToProps,
-  null
-)(JMap);
